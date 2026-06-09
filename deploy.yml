@@ -1,0 +1,29 @@
+# -----------------------------
+      # Update values.yaml (Corrected)
+      # -----------------------------
+      - name: Update Helm values
+        run: |
+          # Go to the specific environment folder
+          cd envs/${{ inputs.TEST }}
+
+          echo "Updating image repository and tag..."
+          # Fix: Using full URL as requested by your input, and local values.yaml
+          sed -i "s|repository:.*|repository: ${{ inputs.ECRURL }}${{ inputs.REPO }}|g" values.yaml
+          sed -i "s|tag:.*|tag: ${{ inputs.IMAGE }}|g" values.yaml
+
+          echo "Updated values.yaml:"
+          cat values.yaml
+
+      # -----------------------------
+      # Commit & Push Changes (Corrected)
+      # -----------------------------
+      - name: Commit and Push
+        run: |
+          git config user.name "github-actions"
+          git config user.email "actions@github.com"
+
+          # Add only the specific file that changed to avoid accidental commits
+          git add envs/${{ inputs.TEST }}/values.yaml
+          git commit -m "Deploy ${{ inputs.IMAGE }} to ${{ inputs.TEST }}" || echo "No changes to commit"
+
+          git push origin main
