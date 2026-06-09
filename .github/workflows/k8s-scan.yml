@@ -1,3 +1,4 @@
+
 name: DevSecOps Pipeline
 
 on:
@@ -32,3 +33,4 @@ jobs:
         run: |
           helm template ./mychart -f envs/functional/values.yaml > renderedmanifest.yaml
           docker run --rm -v "$(pwd):/app" kubesec/kubesec scan /app/renderedmanifest.yaml
+
