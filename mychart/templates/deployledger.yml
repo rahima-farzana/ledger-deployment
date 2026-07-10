@@ -82,5 +82,5 @@ spec:
           - key: application.properties
             path: application.properties
           name: {{ include "mychart.fullname" . }}-wezvaledgerapp
-        name: testconfigmap
+        name: {{ include "mychart.fullname" . }}-wezvaledgerapp
 
